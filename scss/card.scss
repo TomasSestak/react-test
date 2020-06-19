@@ -1,0 +1,10 @@
+.card {
+	display: flex;
+	flex-direction: column;
+	&__author {
+		padding: 20px 15px 10px;
+	}
+	&__post {
+		padding: 0 15px 20px;
+	}
+}
