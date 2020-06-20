@@ -1,16 +1,15 @@
 import React from 'react';
-import { SearchInput } from '@bit/segmentio.evergreen.search-input';
+import {SearchInput} from '@bit/segmentio.evergreen.search-input';
 import Button from '@bit/react-bootstrap.react-bootstrap.button';
 import ReactBootstrapStyle from '@bit/react-bootstrap.react-bootstrap.internal.style-links';
 import Card from './Card';
 
-class Dashboard extends React.Component {
+export default class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			inputValue: 'Prague',
-			data: null,
-			response: null
+			data: null
 		};
 		this.changeValue = this.onChange.bind(this);
 		this.searchValue = this.onSubmit.bind(this);
@@ -20,7 +19,7 @@ class Dashboard extends React.Component {
 	}
 
 	onChange(event) {
-		this.setState({ inputValue: event.target.value });
+		this.setState({inputValue: event.target.value});
 	}
 
 	onSubmit(event) {
@@ -44,7 +43,7 @@ class Dashboard extends React.Component {
 		navigator.geolocation.getCurrentPosition(success, error, options);
 	}
 
-	async fetchByCity () {
+	async fetchByCity() {
 		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.inputValue}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
 		if (!response.ok) {
@@ -57,49 +56,43 @@ class Dashboard extends React.Component {
 		this.setState({data});
 	}
 
-	async fetchByLocation ({latitude, longitude}) {
-		try {
-			const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
+	async fetchByLocation({latitude, longitude}) {
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
-			if (!response.ok) {
-				alert(response.statusText);
-				return;
-			}
-
-			const data = await response.json();
-
-			console.log(data)
-
-			this.setState({data});
-		} catch(err) {
-			console.log(err);
+		if (!response.ok) {
+			alert(response.statusText);
+			return;
 		}
 
+		const data = await response.json();
+
+		this.setState({data});
 	}
 
 	render() {
 		return (
-		<section className="dashboard">
-			<div className="dashboard__head">
-				<h3 className="dashboard__instruction">
-					Type city and press enter :o)
-				</h3>
-				<div>
-					<SearchInput placeholder="Search city ..." value={this.state.inputValue} onChange={this.changeValue} onKeyPress={this.searchValue}/>
+			<section className="dashboard">
+				<div className="dashboard__head">
+					<h3 className="dashboard__instruction">
+						Type city and press enter :o)
+					</h3>
+					<div>
+						<SearchInput placeholder="Search city ..." value={this.state.inputValue}
+						             onChange={this.changeValue} onKeyPress={this.searchValue}/>
+					</div>
+					<div>
+						<Button variant="primary" size="sm" onClick={this.getGeoLocation}>
+							Use your current location
+						</Button>
+					</div>
 				</div>
-				<div>
-					<Button variant="primary" size="sm" onClick={this.getGeoLocation}>
-						Use your current location
-					</Button>
+
+				<div className="dashboard__body">
+					{this.state.data ? <Card result={this.state.data}/> : null}
+
 				</div>
-			</div>
-
-			<div className="dashboard__body">
-				{this.state.data ? <Card result={this.state.data} /> : null}
-
-			</div>
-		<ReactBootstrapStyle />
-		<style jsx global>{`
+				<ReactBootstrapStyle/>
+				<style jsx global>{`
 			button.btn {
 				margin-top: 20px;
 			} 
@@ -120,10 +113,8 @@ class Dashboard extends React.Component {
 				justify-content: center;
 			}
 		`}
-		</style>
-		</section>
+				</style>
+			</section>
 		);
 	}
 }
-
-export default Dashboard;

@@ -43,25 +43,6 @@ export default function Home() {
             font-weight: 300;
             font-size: 45px;
         }
-        
-        .container {
-          max-width: 1180px;
-          padding-left: 10px;
-          padding-right: 10px;
-          display: flex;
-          justify-content: center;
-          margin-left: auto;
-          margin-right: auto;
-          flex-wrap: wrap;
-        }
-        
-        .column {
-          flex: 0 1 25%;
-          min-width: 290px;
-          padding-left: 10px;
-          padding-right: 10px;
-          margin-top: 25px;
-        }
 
       `}</style>
 		</div>

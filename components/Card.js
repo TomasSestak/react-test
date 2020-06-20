@@ -1,32 +1,32 @@
 import React from 'react';
 
-class Card extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+export default class Card extends React.Component {
 	render() {
 		return (
-		<article className="card">
-			<h1 className="card__city">
-				{this.props.result.name}
-			</h1>
-			<h2 className="card__temp">
-				{Math.round(this.props.result.main.temp)} °C
-			</h2>
-			<p className="card__feels-like">
-				feels like {Math.round(this.props.result.main.feels_like)} °C
-			</p>
-			<img src={`http://openweathermap.org/img/wn/${this.props.result.weather[0].icon}@2x.png`} alt="" className="card__icon" />
-			<p className="card__weather">
-				{this.props.result.weather[0].description}
-			</p>
-			<div className="card__bottom">
-				{this.props.result.visibility ? <p className="card__visibility"><strong>visibility:</strong> {this.props.result.visibility} m</p> : null}
-				<p className="card__wind">
-					<strong>speed of wind:</strong> {this.props.result.wind.speed} m/s
+			<article className="card">
+				<h1 className="card__city">
+					{this.props.result.name}
+				</h1>
+				<h2 className="card__temp">
+					{Math.round(this.props.result.main.temp)} °C
+				</h2>
+				<p className="card__feels-like">
+					feels like {Math.round(this.props.result.main.feels_like)} °C
 				</p>
-			</div>
-			<style jsx >{`
+				<img src={`http://openweathermap.org/img/wn/${this.props.result.weather[0].icon}@2x.png`}
+				     className="card__icon"/>
+				<p className="card__weather">
+					{this.props.result.weather[0].description}
+				</p>
+				<div className="card__bottom">
+					{this.props.result.visibility ?
+						<p className="card__visibility"><strong>visibility:</strong> {this.props.result.visibility} m
+						</p> : null}
+					<p className="card__wind">
+						<strong>speed of wind:</strong> {this.props.result.wind.speed} m/s
+					</p>
+				</div>
+				<style jsx>{`
 		        .card {
 		          display: flex;
 		          flex-direction: column;
@@ -71,14 +71,10 @@ class Card extends React.Component {
 		        strong {
 		            white-space: nowrap;
 		        }
-		        
-		        .card__weather {
-		        }
+		       
 		
 		      `}</style>
-		</article>
+			</article>
 		);
 	}
 }
-
-export default Card;
