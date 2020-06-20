@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
 	onClick() {
 		const options = {
 			enableHighAccuracy: true,
-			timeout: 0,
+			timeout: 5000,
 			maximumAge: 5000
 		};
 		const success = (position) => {
@@ -41,16 +41,16 @@ class Dashboard extends React.Component {
 		const error = (err) => {
 			console.log(err);
 		}
+
 		navigator.geolocation.getCurrentPosition(success, error, options);
 	}
 
 	async fetchByCity () {
 		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.inputValue}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
-		console.log(response);
 		if (!response.ok) {
 			alert(response.statusText);
-			return false;
+			return;
 		}
 
 		const data = await response.json();
@@ -58,15 +58,18 @@ class Dashboard extends React.Component {
 		this.setState({data});
 	}
 
-	async fetchByLocation ({lat, lon}) {
-		console.log(lat, lon);
+	async fetchByLocation ({latitude, longitude}) {
 		try {
-			const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=93edad886f0b6b1e623f3a4e2f3553f3`);
+			const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
-			const data = JSON.parse((await response.text())
-				.replace('test(', '')
-				.replace(')', ''));
+			if (!response.ok) {
+				alert(response.statusText);
+				return;
+			}
 
+			const data = await response.json();
+
+			console.log(data)
 
 			this.setState({data});
 		} catch(err) {
@@ -85,11 +88,11 @@ class Dashboard extends React.Component {
 				<div>
 					<SearchInput placeholder="Search city ..." value={this.state.inputValue} onChange={this.changeValue} onKeyPress={this.searchValue}/>
 				</div>
-		{/*		<div>
+				<div>
 					<Button variant="primary" size="sm" onClick={this.getGeoLocation}>
-						Use geolocation
+						Use your current location
 					</Button>
-				</div>*/}
+				</div>
 			</div>
 
 			<div className="dashboard__body">
@@ -98,6 +101,9 @@ class Dashboard extends React.Component {
 			</div>
 		<ReactBootstrapStyle />
 		<style jsx global>{`
+			button.btn {
+				margin-top: 20px;
+			} 
 			.dashboard {
 				padding-bottom: 40px;
 			}
