@@ -35,11 +35,10 @@ class Dashboard extends React.Component {
 			maximumAge: 5000
 		};
 		const success = (position) => {
-			console.log(position);
 			this.fetchByLocation(position.coords);
 		}
 		const error = (err) => {
-			console.log(err);
+			alert(err.message);
 		}
 
 		navigator.geolocation.getCurrentPosition(success, error, options);
