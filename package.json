@@ -8,6 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@bit/myliang.fish-ui.button": "^1.1.32",
+    "@bit/react-bootstrap.react-bootstrap.button": "^1.0.0",
+    "@bit/react-bootstrap.react-bootstrap.internal.style-links": "^1.0.0",
+    "@bit/segmentio.evergreen.search-input": "^4.15.0",
     "next": "9.4.4",
     "node-sass": "^4.14.1",
     "react": "16.13.1",
