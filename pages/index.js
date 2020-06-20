@@ -5,19 +5,15 @@ export default function Home() {
 	return (
 		<div>
 			<Head>
-				<title>Social media feed</title>
+				<title>Weather app</title>
 				<link rel="icon" href="/favicon.ico"/>
 			</Head>
 
-			<main>
+			<main className="main">
 				<header className="header">
-					<div className="container">
-						<div className="column">
-							<h1 className="header__title">
-								Social Media feed
-							</h1>
-						</div>
-					</div>
+					<h1 className="header__title">
+						Check current weather
+					</h1>
 				</header>
 				<Dashboard/>
 			</main>
@@ -35,6 +31,10 @@ export default function Home() {
           box-sizing: border-box;
         }
         
+        .main {
+            padding: 0 15px;
+         }
+        
         .header  {
             padding: 40px 0;
         }
@@ -49,13 +49,14 @@ export default function Home() {
           padding-left: 10px;
           padding-right: 10px;
           display: flex;
+          justify-content: center;
           margin-left: auto;
           margin-right: auto;
           flex-wrap: wrap;
         }
         
         .column {
-          flex: 1 1 25%;
+          flex: 0 1 25%;
           min-width: 290px;
           padding-left: 10px;
           padding-right: 10px;

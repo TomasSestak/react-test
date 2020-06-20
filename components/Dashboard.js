@@ -9,11 +9,14 @@ class Dashboard extends React.Component {
 		super(props);
 		this.state = {
 			inputValue: 'Prague',
-			data: null
+			data: null,
+			response: null
 		};
 		this.changeValue = this.onChange.bind(this);
 		this.searchValue = this.onSubmit.bind(this);
 		this.getGeoLocation = this.onClick.bind(this);
+
+		this.fetchByCity();
 	}
 
 	onChange(event) {
@@ -42,29 +45,23 @@ class Dashboard extends React.Component {
 	}
 
 	async fetchByCity () {
-		try {
-			const response = await fetch(`https://community-open-weather-map.p.rapidapi.com/weather?callback=test&id=2172797&units=%2522metric%2522%20or%20%2522imperial%2522&mode=xml%252C%20html&q=${this.state.inputValue}`, {
-				"method": "GET",
-				"headers": {
-					"x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-					"x-rapidapi-key": "44c48fa58dmsh340edfd389d9b60p1f3e78jsn1ba620b94aa6"
-				}
-			});
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.inputValue}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
-			const data = JSON.parse((await response.text())
-				.replace('test(', '')
-				.replace(')', ''));
-
-			this.setState({data});
-		} catch(err) {
-			console.log(err);
+		console.log(response);
+		if (!response.ok) {
+			alert(response.statusText);
+			return false;
 		}
+
+		const data = await response.json();
+
+		this.setState({data});
 	}
 
 	async fetchByLocation ({lat, lon}) {
 		console.log(lat, lon);
 		try {
-			const response = await fetch(`api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=93edad886f0b6b1e623f3a4e2f3553f3`);
+			const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=93edad886f0b6b1e623f3a4e2f3553f3`);
 
 			const data = JSON.parse((await response.text())
 				.replace('test(', '')
@@ -76,28 +73,27 @@ class Dashboard extends React.Component {
 			console.log(err);
 		}
 
-		console.log(this.state.data);
 	}
 
 	render() {
 		return (
 		<section className="dashboard">
 			<div className="dashboard__head">
+				<h3 className="dashboard__instruction">
+					Type city and press enter :o)
+				</h3>
 				<div>
 					<SearchInput placeholder="Search city ..." value={this.state.inputValue} onChange={this.changeValue} onKeyPress={this.searchValue}/>
-					<p>
-						{this.state.inputValue}
-					</p>
 				</div>
-				<div>
-					<Button variant="primary" size="md" onClick={this.getGeoLocation}>
+		{/*		<div>
+					<Button variant="primary" size="sm" onClick={this.getGeoLocation}>
 						Use geolocation
 					</Button>
-				</div>
+				</div>*/}
 			</div>
 
-			<div className="container">
-				{/*{this.state.data ? this.state.data.map(result => <div className="column" key={result.id}> <Card result={result}/> </div> ) : null}*/}
+			<div className="dashboard__body">
+				{this.state.data ? <Card result={this.state.data} /> : null}
 
 			</div>
 		<ReactBootstrapStyle />
@@ -105,9 +101,18 @@ class Dashboard extends React.Component {
 			.dashboard {
 				padding-bottom: 40px;
 			}
+			.dashboard__instruction {
+				text-align: center;
+			}
 			.dashboard__head {
 				display: flex;
-				justify-content: center;	
+				flex-direction: column;
+				align-items: center;
+			}
+			.dashboard__body {
+				margin-top: 30px;
+				display: flex;
+				justify-content: center;
 			}
 		`}
 		</style>
