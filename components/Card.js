@@ -72,7 +72,9 @@ export default class Card extends React.Component {
 		            flex-direction: column;
 		            padding: 0 15px;
 		        }
-		        
+		        .card__weather {
+		            margin-top: 0;
+		        }
 		        strong {
 		            white-space: nowrap;
 		        }
