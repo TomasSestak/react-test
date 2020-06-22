@@ -43,6 +43,7 @@ export default class Card extends React.Component {
 		        .card__city {
 		            font-size: 40px;
 		            margin: 20px 0;
+		            font-weight: 500;
 		         }
 		        
 		        .card__temp {
@@ -53,6 +54,7 @@ export default class Card extends React.Component {
 		        
 		        .card__feels-like {
 		            font-size: 14px;
+		            margin-top: 8px;
 		            font-style: italic;
 		        }
 		        
@@ -74,9 +76,11 @@ export default class Card extends React.Component {
 		        }
 		        .card__weather {
 		            margin-top: 0;
+		            font-weight: 700;
 		        }
 		        strong {
 		            white-space: nowrap;
+		            font-weight: 600;
 		        }
 		       
 		

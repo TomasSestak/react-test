@@ -13,10 +13,10 @@ export default class Input extends React.Component {
 		            border: none;
 		            cursor: pointer;
 		            margin-top: 15px;   
-		            padding: 10px 15px;
+		            padding: 11px 15px;
 		            border-radius: 10px;
 		            box-shadow: 0 0 5px 3px rgba(0, 0, 0, .05);
-		            background-color: rgba(46,101,220, .8);
+		            background-color: rgba(46,101,220, 0.9);
 		            min-width: 240px;
 		            position: relative;
 		        }
@@ -28,7 +28,7 @@ export default class Input extends React.Component {
 					left: 0;
 					width: 100%;
 					height: 100%;
-					background-color: rgba(46,101,220, .4);
+					background-color: rgba(46,101,220, 1);
 					transition: all 0.2s ease-in-out;
 				}
 				.button:hover::before {
@@ -40,11 +40,13 @@ export default class Input extends React.Component {
 		            color: #fff;
 		            z-index: 1;
 		            position: relative;
+		            letter-spacing: 0.03em;
 		            will-change: letter-spacing;
+		            font-size: 13px;
 		            transition: letter-spacing 0.2s ease-in-out;
 		        }
 		        .button:hover .button__label {
-		            letter-spacing: 0.03em;
+		            letter-spacing: 0.06em;
 		        }
 		        
 		      `}</style>

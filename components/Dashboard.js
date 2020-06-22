@@ -35,10 +35,13 @@ export default class Dashboard extends React.Component {
 
 	onSubmit(event) {
 		if (event.key.toLowerCase() !== 'enter') return;
+		this.resetAnimation();
 		this.fetchByCity();
 	}
 
 	onClick() {
+		this.resetAnimation();
+
 		const options = {
 			enableHighAccuracy: true,
 			timeout: 5000,
@@ -70,16 +73,12 @@ export default class Dashboard extends React.Component {
 
 	async fetchByCity() {
 
-		this.resetAnimation();
-
 		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.inputValue}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
 		this.responseAndState(response);
 	}
 
 	async fetchByLocation({latitude, longitude}) {
-
-		this.resetAnimation();
 
 		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
@@ -95,6 +94,9 @@ export default class Dashboard extends React.Component {
 					</h3>
 					<div>
 						<Input value={this.state.inputValue} placeholder="Search city ..." onChange={this.changeValue} onKeyPress={this.searchValue}/>
+					</div>
+					<div className="dashboard__or">
+						or
 					</div>
 					<div>
 						<Button variant="primary" onClick={this.getGeoLocation}>
@@ -113,7 +115,15 @@ export default class Dashboard extends React.Component {
 					}
 					.dashboard__instruction {
 						text-align: center;
+						font-weight: 200;
+						font-size: 20.5px;
 					}
+					.dashboard__or {
+						font-weight: 200;
+						font-size: 20.5px;
+						margin-top: 12px;
+					}
+					
 					.dashboard__head {
 						display: flex;
 						flex-direction: column;

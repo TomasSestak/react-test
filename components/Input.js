@@ -16,6 +16,7 @@ export default class Input extends React.Component {
 		            box-shadow: 0 0 5px 3px rgba(0, 0, 0, .05);
 		            color: rgba(0, 0, 0, .5);
 		            outline: none;
+		            min-width: 240px;
 		        }
 
 

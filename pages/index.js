@@ -40,8 +40,8 @@ export default function Home() {
         }
         .header__title {
             text-align: center;
-            font-weight: 300;
-            font-size: 45px;
+            font-weight: 200;
+            font-size: 40px;
         }
 
       `}</style>
