@@ -40,6 +40,11 @@ export default class Card extends React.Component {
 		          min-width: 270px;
 		        }
 		        
+		        .card__city {
+		            font-size: 40px;
+		            margin: 20px 0;
+		         }
+		        
 		        .card__temp {
 		            margin-top: 15px;
 		            margin-bottom: 0;

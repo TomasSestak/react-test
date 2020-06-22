@@ -1,8 +1,10 @@
 import React from 'react';
-import {SearchInput} from '@bit/segmentio.evergreen.search-input';
-import Button from '@bit/react-bootstrap.react-bootstrap.button';
-import ReactBootstrapStyle from '@bit/react-bootstrap.react-bootstrap.internal.style-links';
+import gsap from 'gsap';
 import Card from './Card';
+import Input from './Input';
+import Button from './Button';
+gsap.registerPlugin();
+
 
 export default class Dashboard extends React.Component {
 	constructor(props) {
@@ -11,12 +13,21 @@ export default class Dashboard extends React.Component {
 			inputValue: 'Prague',
 			data: null
 		};
+		this.myRef = React.createRef();
 		this.changeValue = this.onChange.bind(this);
 		this.searchValue = this.onSubmit.bind(this);
 		this.getGeoLocation = this.onClick.bind(this);
+	}
 
+	componentDidMount() {
+		this.timeline = gsap.timeline({paused: true}).to(this.myRef.current, 2, {opacity: 1, y: '0px'});
 		this.fetchByCity();
 	}
+
+	resetAnimation() {
+		gsap.set(this.myRef.current, {opacity: 0, y: '-20px'});
+	}
+
 
 	onChange(event) {
 		this.setState({inputValue: event.target.value});
@@ -43,30 +54,36 @@ export default class Dashboard extends React.Component {
 		navigator.geolocation.getCurrentPosition(success, error, options);
 	}
 
-	async fetchByCity() {
-		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.inputValue}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
-
-		if (!response.ok) {
-			alert(response.statusText);
+	async responseAndState(passedResponse) {
+		if (!passedResponse.ok) {
+			alert(passedResponse.statusText);
 			return;
 		}
 
-		const data = await response.json();
+		const data = await passedResponse.json();
 
 		this.setState({data});
+
+		this.timeline.play();
+		this.timeline.seek(0.001);
+	}
+
+	async fetchByCity() {
+
+		this.resetAnimation();
+
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.inputValue}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
+
+		this.responseAndState(response);
 	}
 
 	async fetchByLocation({latitude, longitude}) {
+
+		this.resetAnimation();
+
 		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=93edad886f0b6b1e623f3a4e2f3553f3&units=metric`);
 
-		if (!response.ok) {
-			alert(response.statusText);
-			return;
-		}
-
-		const data = await response.json();
-
-		this.setState({data});
+		this.responseAndState(response);
 	}
 
 	render() {
@@ -77,42 +94,39 @@ export default class Dashboard extends React.Component {
 						Type city and press enter :o)
 					</h3>
 					<div>
-						<SearchInput placeholder="Search city ..." value={this.state.inputValue}
-						             onChange={this.changeValue} onKeyPress={this.searchValue}/>
+						<Input value={this.state.inputValue} placeholder="Search city ..." onChange={this.changeValue} onKeyPress={this.searchValue}/>
 					</div>
 					<div>
-						<Button variant="primary" size="sm" onClick={this.getGeoLocation}>
+						<Button variant="primary" onClick={this.getGeoLocation}>
 							Use your current location
 						</Button>
 					</div>
 				</div>
 
-				<div className="dashboard__body">
+				<div className="dashboard__body" ref={this.myRef}>
 					{this.state.data ? <Card result={this.state.data}/> : null}
 
 				</div>
-				<ReactBootstrapStyle/>
 				<style jsx global>{`
-			button.btn {
-				margin-top: 20px;
-			} 
-			.dashboard {
-				padding-bottom: 40px;
-			}
-			.dashboard__instruction {
-				text-align: center;
-			}
-			.dashboard__head {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-			}
-			.dashboard__body {
-				margin-top: 30px;
-				display: flex;
-				justify-content: center;
-			}
-		`}
+					.dashboard {
+						padding-bottom: 40px;
+					}
+					.dashboard__instruction {
+						text-align: center;
+					}
+					.dashboard__head {
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+					}
+					.dashboard__body {
+						transform: translateY(-20px);
+						opacity: 0;
+						margin-top: 30px;
+						display: flex;
+						justify-content: center;
+					}
+				`}
 				</style>
 			</section>
 		);

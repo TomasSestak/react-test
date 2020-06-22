@@ -36,7 +36,7 @@ export default function Home() {
          }
         
         .header  {
-            padding: 40px 0;
+            padding: 40px 0 0;
         }
         .header__title {
             text-align: center;
